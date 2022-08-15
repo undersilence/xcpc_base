@@ -1,0 +1,89 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build_cpp",
+            "type": "shell",
+            "command": "clang++",
+            "args": [
+                "${file}",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.out",
+                "-Wall",
+                "-g",
+                "-std=c++20",
+                "-DLOCAL_DEBUG"
+            ],
+            "windows": {
+                "args": [
+                    "${file}",
+                    "-o",
+                    "${fileDirname}\\${fileBasenameNoExtension}.exe",
+                    "-Wall",
+                    "-g",
+                    "-std=c++20",
+                    "-DLOCAL_DEBUG"
+                ]
+            },
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "focus": false
+            },
+            // Use the standard MS compiler pattern to detect errors, warnings and infos
+            "problemMatcher": "$gcc"        
+        }, 
+        {
+            "label": "run_cpp (terminal)",
+            "type": "shell",
+            "dependsOn": "build_cpp",
+            "command": "gnome-terminal",
+            "args": [
+                "--window",
+                "--",
+                "\"${fileDirname}/${fileBasenameNoExtension}\""
+            ],
+            "windows": {
+                "command": "start",
+                "args": [
+                    "cmd",
+                    "/c",
+                    "\"${fileDirname}/${fileBasenameNoExtension}.exe && pause\""
+                ],
+            },
+            "presentation": {
+                "reveal": "always",
+                "focus": true
+            },
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
+            "label": "run_cpp (with input)",
+            "type": "shell",
+            "dependsOn": "build_cpp",
+            "command": "gnome-terminal",
+            "args": [
+                "--window",
+                "--",
+                "\"${fileDirname}/${fileBasenameNoExtension}\""
+            ],
+            "windows": {
+                "command": "start",
+                "args": [
+                    "cmd",
+                    "/c",
+                    "\"${fileDirname}/${fileBasenameNoExtension}.exe < test.in && pause\""
+                ],
+            },
+            "presentation": {
+                "reveal": "always",
+                "focus": true
+            },
+            "problemMatcher": [],
+            "group": "build"
+        }
+    ]
+}
